@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+<table class="table table-striped">
+   <tr>
+      <th>Source</th>
+      <th>Timestamp</th> 
+   </tr>
+{% for entry in entries %}
+   <tr><td>{{ entry.source }}</td><td>{{ entry.timestamp }}</td></tr>
+   {% else %}
+   <li><em>Unbelievable.  No entries here so far</em>
+{% endfor %}
+</table>
+{% endblock %}

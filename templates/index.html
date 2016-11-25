@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>SquatCheck</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <div class="jumbotron">
+        <h1>SquatCheck</h1> 
+        <p>Check the usage of the squat racks in the upstairs exercise room of the Cal Poly Rec Center</p> 
+    </div>
+
+
+
+    <div class="row">
+
+
+
+        <div class="col-sm-6">
+            <h3>Left Squat Rack Status:</h3>
+            {% if leftInUse is equalto 1 %}
+            <div class="panel panel-success">
+              <div class="panel-heading">Available - Not in Use!</div>
+              {% else %}
+              <div class="panel panel-danger">
+                  <div class="panel-heading">Currently in use</div>
+                  {% endif %}
+                  <div class="panel-body">Last activity at {{leftTime}}</div>
+              </div>
+
+          </div>
+          <div class="col-sm-6">
+            <h3>Right Squat Rack Status:</h3>
+            {% if rightInUse is equalto 1 %}
+            <div class="panel panel-success">
+              <div class="panel-heading">vailable - Not in Use!</div>
+              {% else %}
+              <div class="panel panel-danger">
+                  <div class="panel-heading">Currently in use</div>
+                  {% endif %}
+                  <div class="panel-body">Last activity at {{rightTime}}</div>
+              </div>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-sm-12">
+            <h2>Average Hourly Usage:</h2>
+            <canvas id="hourChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>Avgerage Daily Usage:</h2>
+        <canvas id="dayChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>
+
+<script>
+    var ctx = document.getElementById("hourChart");
+
+    var hourChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["6-7am", "7-8am", "8-9am", "9-10am", "10-11am", "11-noon", "noon-1pm", "1-2pm", "2-3pm", "3-4pm", "4-5pm", "5-6pm", "6-7pm", "7-8pm", "8-9pm", "9-10pm", "10-11pm", "11-midnight"],
+            datasets: [{
+                label: '# of Votes',
+                data: {{ hourData|tojson|safe }},
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
+    var ctx = document.getElementById("dayChart");
+
+    var dayChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            datasets: [{
+                label: '# of Votes',
+                data: {{ dayData|tojson|safe }},
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+</script>
