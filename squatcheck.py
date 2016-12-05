@@ -39,13 +39,13 @@ def home_page():
    rows = cur.fetchall()
 
    for row in rows:
-      hourData[row[1] - 6] = row[0]
+      hourData[row[1] - 7] = row[0]
 
    cur = db.execute('SELECT COUNT(*) AS entries, dayOfWeek FROM vibrationEvent GROUP BY dayOfWeek ORDER BY dayOfWeek')
    rows = cur.fetchall()
 
    for row in rows:
-      dayData[row[1]] = row[0]
+      dayData[row[1] - 1] = row[0]
 
    cur = db.execute('SELECT timestamp FROM vibrationEvent WHERE source = 1 ORDER BY timestamp DESC LIMIT 1')
    leftTimestamp = cur.fetchone()[0]
